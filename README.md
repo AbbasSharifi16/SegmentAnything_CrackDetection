@@ -26,3 +26,4 @@ Citation
 If you find this code useful in your research, please consider citing:
 
 Ahmadi, M., Lonbar, A.G., Sharifi, A., Beris, A.T., Nouri, M.J., & Javidi, A.S. (2023). Application of Segment Anything Model for Civil Infrastructure Defect Assessment.
+https://arxiv.org/abs/2304.12600
