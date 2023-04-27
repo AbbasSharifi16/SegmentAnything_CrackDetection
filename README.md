@@ -1,4 +1,4 @@
-# SegmentAnything_CrackDetection
+# SegmentAnything CrackDetection
 
 This repository contains the Python code for the SAM model and Matlab code for the U-Net model for detecting cracks in concrete structures.
 
