@@ -25,11 +25,4 @@ MATLAB Deep Learning Toolbox
 Citation
 If you find this code useful in your research, please consider citing:
 
-@misc{ahmadi2023application,
-  title={Application of Segment Anything Model for Civil Infrastructure Defect Assessment},
-  author={Mohsen Ahmadi and Ahmad Gholizadeh Lonbar and Abbas Sharifi and Ali Tarlani Beris and Mohammadsadegh Nouri and Amir Sharifzadeh Javidi},
-  year={2023},
-  eprint={2304.12600},
-  archivePrefix={arXiv},
-  primaryClass={cs.CV}
-}
+Ahmadi, M., Lonbar, A.G., Sharifi, A., Beris, A.T., Nouri, M.J., & Javidi, A.S. (2023). Application of Segment Anything Model for Civil Infrastructure Defect Assessment.
