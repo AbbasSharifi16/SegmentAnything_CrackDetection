@@ -7,14 +7,6 @@ labelDir = fullfile('SemanticSegmentationDefects/PixelLabelDatastore');
 
 imds = imageDatastore(imageDir);
 
-% (17, 141, 215): Water
-% (225, 227, 155): Grassland
-% (127, 173, 123): Forest
-% (185, 122, 87): Hills
-% (230, 200, 181): Desert
-% (150, 150, 150): Mountain
-% (193, 190, 175): Tundra
-
 classNames = ["C1" "C2" "C3"];
 labelIDs = [1  2 3];
 imageSize = [256 256 3];
@@ -26,9 +18,9 @@ ds = pixelLabelImageDatastore(imds,pxds);
   frequency = tbl.PixelCount / totalNumberOfPixels;
   inverseFrequency = 1./frequency;
 options = trainingOptions('sgdm', ...
-    'InitialLearnRate',1e-2, ...
-    'MaxEpochs',1000, ...
-    'LearnRateDropFactor',1e-1, ...
+    'InitialLearnRate',1e-3, ...
+    'MaxEpochs',500, ...
+    'LearnRateDropFactor',1e-3, ...
     'LearnRateDropPeriod',50, ...
     'LearnRateSchedule','piecewise', ...
      'Plots','training-progress',...
@@ -67,20 +59,39 @@ layers2 = unetLayers([256 256 3], 3);
 %pool = parpool
 %gpuDevice(2)
 
-net = trainNetwork(ds,layers2,options);
+options2 = trainingOptions('adam', ...
+    'MaxEpochs', 300, ...
+    'MiniBatchSize', 32, ...
+    'InitialLearnRate', 1e-4, ...
+    'Shuffle', 'every-epoch', ...
+    'ValidationFrequency', 10, ...
+    'Plots', 'training-progress', ...
+    'ExecutionEnvironment', 'multi-gpu');
+
+net = trainNetwork(ds,layers2,options2);
 save('netColor.mat','net');
 %% Test
-I = imread('SemanticSegmentationDefects/ImageDatastore/4.jpg');
-GT1=imread('SemanticSegmentationDefects/PixelLabelDatastore/4.png');
+I = imread('SemanticSegmentationDefects/ImageDatastore/176.jpg');
+GT1=imread('SemanticSegmentationDefects/PixelLabelDatastore/176.png');
 
 [C,scores] = semanticseg(I,net);
-% B = labeloverlay(I,C); 
+%297,176,68, 41, 10, 56, 710
+
 C1=(C=='C1');
 C2=(C=='C2');
 C3=(C=='C3');
 
+B = labeloverlay(I,C1); 
 
-figure
-imshow(imtile({I,GT,C1,C2,C3}))
+figure(2)
+imshow(imtile({I,GT1,C1,C2,C3}))
+
+imshow(B)
+
+% Define the three colors to use for each label
+colors = [1 1 1; 1 0 0; 1 1 1];
+
+% Display the mask with each label colored differently
+imshow(ind2rgb(C, colors));
 
 
