@@ -20,8 +20,8 @@ NumPy
 Matplotlib
 OpenCV
 The Matlab code requires the following packages:
-
 MATLAB Deep Learning Toolbox
+
 Citation
 If you find this code useful in your research, please consider citing:
 
