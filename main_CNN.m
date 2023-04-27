@@ -17,47 +17,11 @@ ds = pixelLabelImageDatastore(imds,pxds);
   totalNumberOfPixels = sum(tbl.PixelCount);
   frequency = tbl.PixelCount / totalNumberOfPixels;
   inverseFrequency = 1./frequency;
-options = trainingOptions('sgdm', ...
-    'InitialLearnRate',1e-3, ...
-    'MaxEpochs',500, ...
-    'LearnRateDropFactor',1e-3, ...
-    'LearnRateDropPeriod',50, ...
-    'LearnRateSchedule','piecewise', ...
-     'Plots','training-progress',...
-    'ExecutionEnvironment','multi-gpu', ...
-    'MiniBatchSize',32);
-layers = [
-    imageInputLayer([256 256 3])
-    convolution2dLayer(3,32,'Padding',1)
-    reluLayer
-    dropoutLayer(0.5)
-    maxPooling2dLayer(2,'Stride',2)
-    convolution2dLayer(3,64,'Padding',1)
-    reluLayer
-    transposedConv2dLayer(4,32,'Stride',2,'Cropping',1)
-    convolution2dLayer(1,3)
-    softmaxLayer
-    pixelClassificationLayer('Classes',tbl.Name,'ClassWeights',inverseFrequency)];
+
 % a=gpuArray(7);
 
 layers2 = unetLayers([256 256 3], 3);
 
-% Apply transformations (using randomly picked values) and build augmented
-% data store
-%imageAugmenter = imageDataAugmenter( ...
-%    'RandRotation',[-20,20], ...
-%    'RandXTranslation',[-5 5], ...
- %   'RandYTranslation',[-5 5]);
-%augImds = augmentedImageDatastore(imageSize,ds,'DataAugmentation',imageAugmenter);
-
-% (OPTIONAL) Preview augmentation results 
-%batchedData = preview(augImds);
-%figure, imshow(imtile(batchedData.input))
-    
-%% Train the network. 
-%ds=augImds;
-%pool = parpool
-%gpuDevice(2)
 
 options2 = trainingOptions('adam', ...
     'MaxEpochs', 300, ...
